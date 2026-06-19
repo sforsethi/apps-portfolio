@@ -874,14 +874,40 @@ function initContactForm() {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `Sending...`;
 
-    // Mock API call timer
-    setTimeout(() => {
-      form.style.display = "none";
-      successWrapper.style.display = "flex";
-      
-      // Reset form fields
-      form.reset();
-    }, 1500);
+    // AJAX post request to FormSubmit
+    fetch("https://formsubmit.co/ajax/raghav@niyatstudio.com", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        message: msg,
+        _subject: `New App Portfolio Message from ${name}`
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+
+      // FormSubmit returns data.success as "true" (string) or true (boolean)
+      if (data.success === "true" || data.success === true) {
+        form.style.display = "none";
+        successWrapper.style.display = "flex";
+        form.reset();
+      } else {
+        alert("Oops! Something went wrong. Please try again or contact raghav@niyatstudio.com directly.");
+      }
+    })
+    .catch(error => {
+      console.error("Error submitting form:", error);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+      alert("Oops! Something went wrong. Please check your network connection or contact raghav@niyatstudio.com directly.");
+    });
   });
 }
 
