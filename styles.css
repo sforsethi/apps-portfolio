@@ -396,18 +396,27 @@ header.scrolled {
 }
 
 /* Typewriter animation */
+.typewriter-wrapper {
+  display: inline-block;
+  min-height: 1.2em;
+  vertical-align: bottom;
+}
+
 .typewriter {
   font-weight: 700;
   color: var(--text-main);
   border-right: 2px solid var(--primary);
   white-space: nowrap;
   animation: blink 0.75s step-end infinite;
+  font-size: clamp(1.6rem, 5vw, 3.5rem);
 }
 
 @keyframes blink {
   from, to { border-color: transparent }
   50% { border-color: var(--primary); }
 }
+
+
 
 .hero-cta {
   display: flex;
