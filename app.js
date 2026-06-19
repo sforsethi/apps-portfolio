@@ -893,13 +893,29 @@ function initContactForm() {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalBtnText;
 
-      // FormSubmit returns data.success as "true" (string) or true (boolean)
-      if (data.success === "true" || data.success === true) {
+      const isSuccess = data.success === "true" || data.success === true;
+      const isActivation = data.success === "false" && data.message && data.message.toLowerCase().includes("activation");
+
+      if (isSuccess || isActivation) {
         form.style.display = "none";
+        
+        if (isActivation) {
+          const successTitle = successWrapper.querySelector("h3");
+          const successText = successWrapper.querySelector("p");
+          if (successTitle) successTitle.textContent = "Activation Required!";
+          if (successText) successText.textContent = "Almost there! We've sent an activation link to raghav@niyatstudio.com. Please check your inbox and click the link to activate this form.";
+        } else {
+          // Reset success message in case it was modified before
+          const successTitle = successWrapper.querySelector("h3");
+          const successText = successWrapper.querySelector("p");
+          if (successTitle) successTitle.textContent = "Message Received!";
+          if (successText) successText.textContent = "Thank you for reaching out, Raghav. I will respond to your email as soon as possible.";
+        }
+
         successWrapper.style.display = "flex";
         form.reset();
       } else {
-        alert("Oops! Something went wrong. Please try again or contact raghav@niyatstudio.com directly.");
+        alert(data.message || "Oops! Something went wrong. Please try again or contact raghav@niyatstudio.com directly.");
       }
     })
     .catch(error => {
