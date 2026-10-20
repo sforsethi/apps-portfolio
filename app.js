@@ -373,67 +373,6 @@ const appsData = [
     }
   },
   {
-    id: "answer-key",
-    title: "Answer Key",
-    subtitle: "Academic Solutions Database",
-    category: "utilities",
-    platform: "android",
-    shortDesc: "An archived educational helper app designed to aggregate academic exam solutions, question guides, and keys offline.",
-    fullDesc: "Answer Key was designed as an educational assistant app. It stores exam solutions, question sheets, and verified answer keys in a structured local database. Students could browse answers by subject, bookmark key items, and download pdf question guides to view without network connectivity.",
-    image: "assets/images/answer_key.jpg",
-    tags: ["Android", "Java", "PDF Renderer", "Local DB", "Education"],
-    color: "#64748b",
-    colorLight: "rgba(100, 116, 139, 0.15)",
-    status: "Inactive / Archived",
-    rating: "",
-    stats: {
-      category: "Educational Aggregator",
-      status: "Archived / Inactive",
-      type: "Offline Database"
-    },
-    features: [
-      "Structured local database of exam answer lists",
-      "Offline PDF reader and page zoom utilities",
-      "Categorized directories for school & competitive exams",
-      "Favorites bookmarking system for study guides",
-      "Secure local file caching mechanisms"
-    ],
-    links: {
-      github: "https://github.com/sforsethi/answer-key"
-    }
-  },
-  {
-    id: "bider",
-    title: "Bider",
-    subtitle: "Motorcycle Community & Route Tracker",
-    category: "utilities",
-    platform: "android",
-    shortDesc: "A real-time community application built for motorcycle riders to plan group rides, track rider location tracks, and join local clubs.",
-    fullDesc: "Bider is a motorcycle community companion app. It connects local riders through location search, allows forming riding clubs, enables scheduling group tours, and provides real-time GPS tracking of participants during active tours to ensure the pack stays together.",
-    image: "assets/images/bider.jpg",
-    tags: ["Android", "Kotlin", "Google Maps API", "Location Services", "Real-Time Tracking"],
-    color: "#d97706", // glowing orange/yellow
-    colorLight: "rgba(217, 119, 6, 0.15)",
-    status: "Just Released / Active",
-    rating: "5.0",
-    stats: {
-      platform: "Google Play Store",
-      scope: "Riders & Touring Clubs",
-      rating: "5.0★ Star Rating"
-    },
-    features: [
-      "Real-time GPS ride tracking for group riders",
-      "Create and search local motorcycle riding clubs",
-      "Interactive group tour creator with scheduled stops",
-      "Rider profiles showing favorite routes and bikes",
-      "Privacy-focused location sharing (active sessions only)"
-    ],
-    links: {
-      live: "https://play.google.com/store/apps/details?id=com.ardnemos.bider",
-      github: "https://github.com/sforsethi/bider"
-    }
-  },
-  {
     id: "latte-android",
     title: "Latte (Android)",
     subtitle: "Mentorship Platform App",
