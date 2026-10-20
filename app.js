@@ -3,6 +3,36 @@
 // --- APPLICATIONS DATA ---
 const appsData = [
   {
+    id: "ryce",
+    title: "Ryce",
+    subtitle: "Recipes, Meal Plans & Grocery Lists",
+    category: "utilities",
+    platform: "ios",
+    shortDesc: "Turn recipes saved from social media and the web into meals you can plan, shop for, and cook.",
+    fullDesc: "Ryce is a cooking companion that brings saved recipes into one place. Import recipes from social videos and websites, organize them into folders, plan meals ahead, and build grocery lists for the store.",
+    image: "assets/ryce-story/screens/home.png",
+    tags: ["iOS", "Recipes", "Meal Planning", "Grocery Lists", "Social Import"],
+    color: "#8fb33f",
+    colorLight: "rgba(143, 179, 63, 0.15)",
+    status: "Live on App Store",
+    rating: "",
+    stats: {
+      platform: "iPhone App",
+      planning: "Meals up to two weeks ahead",
+      import: "Social videos and recipe websites"
+    },
+    features: [
+      "Import recipes from Instagram Reels, TikTok, YouTube Shorts, and websites",
+      "Organize saved recipes into folders",
+      "Plan meals up to two weeks ahead",
+      "Create and share grocery lists or save them to Apple Reminders",
+      "Discover curated regional recipe packs"
+    ],
+    links: {
+      appstore: "https://apps.apple.com/app/id6768017245"
+    }
+  },
+  {
     id: "alphavex",
     title: "Alphavex",
     subtitle: "Fitness & Nutrition Companion",
