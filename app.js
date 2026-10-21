@@ -29,7 +29,8 @@ const appsData = [
       "Discover curated regional recipe packs"
     ],
     links: {
-      appstore: "https://apps.apple.com/app/id6768017245"
+      appstore: "https://apps.apple.com/app/id6768017245",
+      site: "ryce/"
     }
   },
   {
@@ -440,89 +441,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initPortfolio();
 });
 
-// --- THEME MANAGEMENT ---
-function initTheme() {
-  const themeToggle = document.getElementById("theme-toggle");
-  if (!themeToggle) return;
-
-  // Check saved theme or system preference
-  const savedTheme = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  
-  const currentTheme = savedTheme || (prefersDark ? "dark" : "light");
-  document.documentElement.setAttribute("data-theme", currentTheme);
-
-  themeToggle.addEventListener("click", () => {
-    const activeTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = activeTheme === "dark" ? "light" : "dark";
-    
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-  });
-}
-
-// --- HEADER SCROLL ACTION ---
-function initHeader() {
-  const header = document.querySelector("header");
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 20) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
-    }
-  });
-}
-
-// --- TYPEWRITER EFFECT ---
-class TypeWriter {
-  constructor(element, words, wait = 2500) {
-    this.element = element;
-    this.words = words;
-    this.txt = '';
-    this.wordIndex = 0;
-    this.wait = parseInt(wait, 10);
-    this.isDeleting = false;
-    this.type();
-  }
-
-  type() {
-    const current = this.wordIndex % this.words.length;
-    const fullTxt = this.words[current];
-
-    if (this.isDeleting) {
-      this.txt = fullTxt.substring(0, this.txt.length - 1);
-    } else {
-      this.txt = fullTxt.substring(0, this.txt.length + 1);
-    }
-
-    this.element.innerHTML = this.txt;
-
-    let typeSpeed = 80;
-
-    if (this.isDeleting) {
-      typeSpeed /= 2;
-    }
-
-    if (!this.isDeleting && this.txt === fullTxt) {
-      typeSpeed = this.wait;
-      this.isDeleting = true;
-    } else if (this.isDeleting && this.txt === '') {
-      this.isDeleting = false;
-      this.wordIndex++;
-      typeSpeed = 400;
-    }
-
-    setTimeout(() => this.type(), typeSpeed);
-  }
-}
-
-function initTypewriter() {
-  const target = document.getElementById("typewriter-text");
-  if (!target) return;
-  const headings = ["beautiful web apps.", "high-performance mobile apps.", "native desktop utilities.", "developer-centric tools."];
-  new TypeWriter(target, headings, 2200);
-}
-
 // --- PORTFOLIO SYSTEM ---
 let activeCategory = "all";
 let searchQuery = "";
@@ -566,58 +484,37 @@ function initPortfolio() {
 }
 
 function renderCard(app, targetGrid) {
-  const card = document.createElement("div");
-  card.className = "app-card";
-  card.setAttribute("style", `--app-color: ${app.color}; --app-color-light: ${app.colorLight};`);
+  const card = document.createElement("article");
+  card.className = `app-card${app.id === "ryce" ? " app-card-featured" : ""}`;
   card.dataset.id = app.id;
   card.setAttribute("role", "button");
   card.setAttribute("tabindex", "0");
   card.setAttribute("aria-label", `View ${app.title} details`);
 
-  const tagsHtml = app.tags.slice(0, 3).map(tag => `<span class="tag-pill">${tag}</span>`).join('');
-  const ratingHtml = app.rating ? `
-    <span class="app-card-rating">
-      <svg style="width:14px;height:14px;fill:currentColor" viewBox="0 0 24 24"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg>
-      ${app.rating}
-    </span>
-  ` : '';
+  const artwork = app.id === "ryce"
+    ? `<img class="ryce-screen ryce-screen-back" src="assets/ryce-story/screens/meal-plan.png" alt="Ryce meal plan screen" loading="lazy">
+       <img class="ryce-screen ryce-screen-front" src="${app.image}" alt="Ryce home screen" loading="lazy">`
+    : `<img src="${app.image}" alt="${app.title} app screenshot" loading="lazy">`;
 
   card.innerHTML = `
-    <div class="app-card-img-wrapper">
-      <img src="${app.image}" alt="${app.title} UI Mockup" loading="lazy">
-      <div class="app-card-badge">${app.status}</div>
+    <div class="card-copy">
+      ${app.id === "ryce" ? '<img class="featured-icon" src="ryce/assets/icon.png" alt="Ryce app icon" loading="lazy">' : ''}
+      <span class="card-platform">${app.platform === "ios" ? "iPhone app" : "Android app"}</span>
+      <h3>${app.title}</h3>
+      <p class="card-subtitle">${app.subtitle}</p>
+      <p class="card-description">${app.shortDesc}</p>
+      <span class="card-action">Explore app <span aria-hidden="true">↗</span></span>
     </div>
-    <div class="app-card-info">
-      <div class="app-card-header">
-        <h3 class="app-card-title">${app.title}</h3>
-        ${ratingHtml}
-      </div>
-      <p class="app-card-subtitle">${app.subtitle}</p>
-      <p class="app-card-desc">${app.shortDesc}</p>
-    </div>
-    <div class="app-card-tags">
-      ${tagsHtml}
-      ${app.tags.length > 3 ? `<span class="tag-pill">+${app.tags.length - 3}</span>` : ''}
-    </div>
-    <div class="app-card-footer">
-      <span class="learn-more-link">
-        Explore Details 
-        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-      </span>
-    </div>
+    <div class="card-art">${artwork}</div>
   `;
 
-  // Click handler for opening modal
-  card.addEventListener("click", () => {
-    openAppModal(app.id);
-  });
+  card.addEventListener("click", () => openAppModal(app.id));
   card.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       openAppModal(app.id);
     }
   });
-
   targetGrid.appendChild(card);
 }
 
@@ -737,6 +634,9 @@ function openAppModal(appId) {
   if (app.links.appstore) {
     actionsHtml += `<a href="${app.links.appstore}" target="_blank" class="btn btn-secondary">Download on Store</a>`;
   }
+  if (app.links.site) {
+    actionsHtml += `<a href="${app.links.site}" class="btn btn-secondary">Explore website</a>`;
+  }
   if (app.links.github) {
     actionsHtml += `<a href="${app.links.github}" target="_blank" class="btn btn-secondary">
       <svg style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.41 6,9.54 6.63,8.85C6.52,8.6 6.18,7.58 6.73,6.22C6.73,6.22 7.56,5.95 9.45,7.23C10.24,7 11.09,6.9 11.93,6.9C12.77,6.9 13.62,7 14.41,7.23C16.3,5.95 17.13,6.22 17.13,6.22C17.68,7.58 17.34,8.6 17.23,8.85C17.87,9.54 18.25,10.41 18.25,11.5C18.25,15.32 15.91,16.16 13.68,16.41C14.04,16.72 14.36,17.33 14.36,18.27C14.36,19.62 14.35,20.71 14.35,21C14.35,21.28 14.5,21.6 15,21.5C18.97,20.17 21.88,16.42 21.88,12C21.88,6.58 17.42,2 12,2Z"/></svg>
@@ -801,11 +701,9 @@ function openAppModal(appId) {
   const newCloseBtn = modalContent.querySelector("#modal-close-btn");
   newCloseBtn.addEventListener("click", closeModal);
 
-  // Stop body scroll
+  // Keep the current page position while the dialog is open.
   scrollPositionBeforeModal = window.scrollY;
-  document.body.style.position = 'fixed';
-  document.body.style.top = `-${scrollPositionBeforeModal}px`;
-  document.body.style.width = '100%';
+  document.body.style.overflow = 'hidden';
 
   overlay.classList.add("open");
   modalContent.focus();
@@ -817,113 +715,6 @@ function closeModal() {
 
   overlay.classList.remove("open");
 
-  // Restore body scroll
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
+  document.body.style.overflow = '';
   window.scrollTo(0, scrollPositionBeforeModal);
-}
-
-// --- CONTACT FORM HANDLER ---
-function initContactForm() {
-  const form = document.getElementById("contact-form");
-  const successWrapper = document.getElementById("form-success");
-  
-  if (!form || !successWrapper) return;
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // Basic fields validation
-    const name = document.getElementById("form-name").value;
-    const email = document.getElementById("form-email").value;
-    const msg = document.getElementById("form-message").value;
-
-    if (!name || !email || !msg) {
-      alert("Please fill out all fields.");
-      return;
-    }
-
-    // Submit state animation
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `Sending...`;
-
-    // AJAX post request to FormSubmit
-    fetch("https://formsubmit.co/ajax/raghav@niyatstudio.com", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        message: msg,
-        _subject: `New App Portfolio Message from ${name}`
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnText;
-
-      const isSuccess = data.success === "true" || data.success === true;
-      const isActivation = data.success === "false" && data.message && data.message.toLowerCase().includes("activation");
-
-      if (isSuccess || isActivation) {
-        form.style.display = "none";
-        
-        if (isActivation) {
-          const successTitle = successWrapper.querySelector("h3");
-          const successText = successWrapper.querySelector("p");
-          if (successTitle) successTitle.textContent = "Activation Required!";
-          if (successText) successText.textContent = "Almost there! We've sent an activation link to raghav@niyatstudio.com. Please check your inbox and click the link to activate this form.";
-        } else {
-          // Reset success message in case it was modified before
-          const successTitle = successWrapper.querySelector("h3");
-          const successText = successWrapper.querySelector("p");
-          if (successTitle) successTitle.textContent = "Message Received!";
-          if (successText) successText.textContent = "Thank you for reaching out, Raghav. I will respond to your email as soon as possible.";
-        }
-
-        successWrapper.style.display = "flex";
-        form.reset();
-      } else {
-        alert(data.message || "Oops! Something went wrong. Please try again or contact raghav@niyatstudio.com directly.");
-      }
-    })
-    .catch(error => {
-      console.error("Error submitting form:", error);
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnText;
-      alert("Oops! Something went wrong. Please check your network connection or contact raghav@niyatstudio.com directly.");
-    });
-  });
-}
-
-// --- SCROLL SPY NAVIGATION ---
-function initScrollSpy() {
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll(".nav-links a");
-
-  window.addEventListener("scroll", () => {
-    let scrollY = window.scrollY;
-    
-    sections.forEach(section => {
-      const sectionHeight = section.offsetHeight;
-      const sectionTop = section.offsetTop - 120;
-      const sectionId = section.getAttribute("id");
-      
-      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-        navLinks.forEach(link => {
-          link.classList.remove("active");
-          if (link.getAttribute("href") === `#${sectionId}`) {
-            link.classList.add("active");
-          }
-        });
-      }
-    });
-  });
 }
