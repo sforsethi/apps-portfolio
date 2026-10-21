@@ -255,17 +255,17 @@ const appsData = [
     title: "Phoenix Nhance",
     subtitle: "Mall Loyalty & Rewards Platform",
     category: "utilities",
-    platform: "ios",
-    shortDesc: "A premium native iOS mall loyalty and digital assistant application designed for India's largest shopping mall chain.",
+    platform: "both",
+    shortDesc: "A mall loyalty and digital assistant app for shoppers at Phoenix malls.",
     fullDesc: "Phoenix Nhance is a high-traffic loyalty app built for The Phoenix Mills Limited. It enables mall shoppers to earn rewards by scanning invoices, discover active store sales and exclusive events, navigate mall directories with interactive store listings, and pre-book parking slots.",
     image: "assets/images/phoenix_nhance.jpg",
     tags: ["Swift", "UIKit", "REST API", "Loyalty Integrations", "Invoice Processing"],
     color: "#f43f5e", // rose/rose-red
     colorLight: "rgba(244, 63, 94, 0.15)",
-    status: "Live on App Store",
+    status: "Live on App Store & Google Play",
     rating: "3.4",
     stats: {
-      platform: "iOS App Store",
+      platform: "iOS & Android",
       scale: "Millions of Active Users",
       role: "Lead iOS Engineer"
     },
@@ -278,6 +278,7 @@ const appsData = [
     ],
     links: {
       appstore: "https://apps.apple.com/in/app/phoenix-nhance/id1471334354",
+      live: "https://play.google.com/store/apps/details?id=com.phoenix.nhance",
       github: "https://github.com/sforsethi/phoenix-nhance"
     }
   },
@@ -499,7 +500,7 @@ function renderCard(app, targetGrid) {
   card.innerHTML = `
     <div class="card-copy">
       ${app.id === "ryce" ? '<img class="featured-icon" src="ryce/assets/icon.png" alt="Ryce app icon" loading="lazy">' : ''}
-      <span class="card-platform">${app.platform === "ios" ? "iPhone app" : "Android app"}</span>
+      <span class="card-platform">${targetGrid.id === "apps-grid" ? "iPhone app" : "Android app"}</span>
       <h3>${app.title}</h3>
       <p class="card-subtitle">${app.subtitle}</p>
       <p class="card-description">${app.shortDesc}</p>
@@ -525,7 +526,7 @@ function renderApps() {
   if (iosGrid) {
     // Filter iOS apps
     const filteredIos = appsData.filter(app => {
-      if (app.platform !== "ios") return false;
+      if (app.platform !== "ios" && app.platform !== "both") return false;
       const matchesCategory = activeCategory === "all" || app.category === activeCategory;
       const matchesSearch = app.title.toLowerCase().includes(searchQuery) ||
                             app.subtitle.toLowerCase().includes(searchQuery) ||
@@ -549,14 +550,15 @@ function renderApps() {
 
   if (androidGrid) {
     // Filter Android apps
-    const filteredAndroid = appsData.filter(app => {
-      if (app.platform !== "android") return false;
-      const matchesSearch = app.title.toLowerCase().includes(searchQuery) ||
-                            app.subtitle.toLowerCase().includes(searchQuery) ||
-                            app.tags.some(tag => tag.toLowerCase().includes(searchQuery)) ||
-                            app.shortDesc.toLowerCase().includes(searchQuery);
-      return matchesSearch;
-    });
+    const filteredAndroid = ["nimnim-android", "phoenix-nhance", "latte-android"]
+      .map(id => appsData.find(app => app.id === id))
+      .filter(app => {
+        if (!app) return false;
+        return app.title.toLowerCase().includes(searchQuery) ||
+               app.subtitle.toLowerCase().includes(searchQuery) ||
+               app.tags.some(tag => tag.toLowerCase().includes(searchQuery)) ||
+               app.shortDesc.toLowerCase().includes(searchQuery);
+      });
 
     androidGrid.innerHTML = "";
 
@@ -629,10 +631,10 @@ function openAppModal(appId) {
   // Action links validation
   let actionsHtml = "";
   if (app.links.live) {
-    actionsHtml += `<a href="${app.links.live}" target="_blank" class="btn btn-primary">Visit Live App</a>`;
+    actionsHtml += `<a href="${app.links.live}" target="_blank" class="btn btn-primary">View on Google Play</a>`;
   }
   if (app.links.appstore) {
-    actionsHtml += `<a href="${app.links.appstore}" target="_blank" class="btn btn-secondary">Download on Store</a>`;
+    actionsHtml += `<a href="${app.links.appstore}" target="_blank" class="btn btn-secondary">View on App Store</a>`;
   }
   if (app.links.site) {
     actionsHtml += `<a href="${app.links.site}" class="btn btn-secondary">Explore website</a>`;
