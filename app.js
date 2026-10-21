@@ -91,7 +91,7 @@ const appsData = [
       "Camera integration to photograph alteration details"
     ],
     links: {
-      appstore: "https://apps.apple.com/us/app/nimnim-laundry-dry-clean/id1111624838",
+      appstore: "https://apps.apple.com/us/app/nimnim-laundry-dry-clean/id926239555",
       github: "https://github.com/sforsethi/nimnim"
     }
   },
@@ -259,6 +259,11 @@ const appsData = [
     shortDesc: "A mall loyalty and digital assistant app for shoppers at Phoenix malls.",
     fullDesc: "Phoenix Nhance is a high-traffic loyalty app built for The Phoenix Mills Limited. It enables mall shoppers to earn rewards by scanning invoices, discover active store sales and exclusive events, navigate mall directories with interactive store listings, and pre-book parking slots.",
     image: "assets/images/phoenix_nhance.jpg",
+    screenshots: [
+      "assets/screenshots/android/phoenix/1.jpg",
+      "assets/screenshots/android/phoenix/2.jpg",
+      "assets/screenshots/android/phoenix/3.jpg"
+    ],
     tags: ["Swift", "UIKit", "REST API", "Loyalty Integrations", "Invoice Processing"],
     color: "#f43f5e", // rose/rose-red
     colorLight: "rgba(244, 63, 94, 0.15)",
@@ -352,6 +357,11 @@ const appsData = [
     shortDesc: "Android client for scheduling laundry, dry cleaning, alterations, and shoe repair services with 24-hour turnaround in Boston, NYC, and Miami.",
     fullDesc: "NimNim is the Android client for the on-demand dry cleaning and laundry platform. It connects users with local washing facilities, allowing them to schedule pick-ups and deliveries, select detailed washing preferences, check order progress updates, and apply discount credit balances.",
     image: "assets/images/nimnim.jpg",
+    screenshots: [
+      "assets/screenshots/android/nimnim/1.jpg",
+      "assets/screenshots/android/nimnim/2.jpg",
+      "assets/screenshots/android/nimnim/3.jpg"
+    ],
     tags: ["Android", "Kotlin", "Google Maps API", "REST Client", "Push Messaging"],
     color: "#0ea5e9", // light blue
     colorLight: "rgba(14, 165, 233, 0.15)",
@@ -370,7 +380,7 @@ const appsData = [
       "Store locator and customer support chat modules"
     ],
     links: {
-      live: "https://play.google.com/store/apps/details?id=com.nimnim.customer",
+      live: "https://play.google.com/store/apps/details?id=com.nimnim.app",
       github: "https://github.com/sforsethi/nimnim-android"
     }
   },
@@ -413,6 +423,11 @@ const appsData = [
     shortDesc: "Android counterpart of the professional mentorship platform facilitating structured 1-on-1 calls and progress logs.",
     fullDesc: "Latte is an AI-powered mentorship platform for private organizational communities. The Android client features automated mentor-mentee matchmaking dashboards, integrated call booking calendars, real-time message feeds, and goal tracking logs to make mentorship guidance structured and successful.",
     image: "assets/images/latte.jpg",
+    screenshots: [
+      "assets/screenshots/android/latte/1.jpg",
+      "assets/screenshots/android/latte/2.jpg",
+      "assets/screenshots/android/latte/3.jpg"
+    ],
     tags: ["Android", "Kotlin", "REST client", "Push Notification", "Calendar Sync"],
     color: "#b45309", // amber/brown
     colorLight: "rgba(180, 83, 9, 0.15)",
@@ -431,7 +446,7 @@ const appsData = [
       "Organization community admin panel controls"
     ],
     links: {
-      live: "https://play.google.com/store/apps/details?id=com.latte.connect",
+      live: "https://play.google.com/store/apps/details?id=com.latteconnect.latte_android",
       github: "https://github.com/sforsethi/latte-android"
     }
   }
@@ -492,10 +507,13 @@ function renderCard(app, targetGrid) {
   card.setAttribute("tabindex", "0");
   card.setAttribute("aria-label", `View ${app.title} details`);
 
-  const artwork = app.id === "ryce"
-    ? `<img class="ryce-screen ryce-screen-back" src="assets/ryce-story/screens/meal-plan.png" alt="Ryce meal plan screen" loading="lazy">
-       <img class="ryce-screen ryce-screen-front" src="${app.image}" alt="Ryce home screen" loading="lazy">`
-    : `<img src="${app.image}" alt="${app.title} app screenshot" loading="lazy">`;
+  const isAndroidGallery = targetGrid.id === "android-apps-grid" && app.screenshots;
+  const artwork = isAndroidGallery
+    ? app.screenshots.map((src, index) => `<img class="gallery-shot" src="${src}" alt="${app.title} screenshot ${index + 1} of 3" loading="lazy">`).join("")
+    : app.id === "ryce"
+      ? `<img class="ryce-screen ryce-screen-back" src="assets/ryce-story/screens/meal-plan.png" alt="Ryce meal plan screen" loading="lazy">
+         <img class="ryce-screen ryce-screen-front" src="${app.image}" alt="Ryce home screen" loading="lazy">`
+      : `<img src="${app.image}" alt="${app.title} app screenshot" loading="lazy">`;
 
   card.innerHTML = `
     <div class="card-copy">
@@ -506,7 +524,7 @@ function renderCard(app, targetGrid) {
       <p class="card-description">${app.shortDesc}</p>
       <span class="card-action">Explore app <span aria-hidden="true">↗</span></span>
     </div>
-    <div class="card-art">${artwork}</div>
+    <div class="card-art${isAndroidGallery ? " screenshot-gallery" : ""}">${artwork}</div>
   `;
 
   card.addEventListener("click", () => openAppModal(app.id));

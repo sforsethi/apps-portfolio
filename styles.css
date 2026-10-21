@@ -66,6 +66,8 @@ section[id], .collection-bar[id] { scroll-margin-top: 85px; }
 .card-action span { font-size: 17px; }
 .card-art { position: relative; flex: 1; display: grid; place-items: end center; min-height: 330px; padding: 24px 24px 0; overflow: hidden; background: #e8edff; }
 .card-art > img:not(.ryce-screen) { width: auto; height: 410px; max-width: 86%; object-fit: contain; object-position: center; transform: translateY(28px); filter: drop-shadow(0 10px 18px rgba(0,0,0,.13)); }
+.card-art.screenshot-gallery { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 28px 20px; }
+.card-art.screenshot-gallery > .gallery-shot { width: min(31%, 155px); height: auto; max-width: none; aspect-ratio: 400 / 711; object-fit: cover; border-radius: 14px; transform: none; filter: none; box-shadow: 0 12px 28px rgba(0,0,0,.14); }
 .app-card[data-id="ryce"] { grid-column: 1/-1; min-height: 590px; display: grid; grid-template-columns: .82fr 1.18fr; background: #fbeaf0; }
 .app-card[data-id="ryce"] .card-copy { min-height: 0; align-self: center; padding: 55px 0 55px clamp(44px, 6vw, 82px); }
 .featured-icon { width: 64px; height: 64px; margin-bottom: 24px; border-radius: 15px; box-shadow: 0 10px 24px rgba(82,42,62,.13); }
@@ -173,6 +175,8 @@ section[id], .collection-bar[id] { scroll-margin-top: 85px; }
   .card-copy { min-height: 230px; padding: 30px 28px 0; }
   .card-art { min-height: 310px; }
   .card-art > img:not(.ryce-screen) { height: 390px; }
+  .card-art.screenshot-gallery { gap: 8px; padding: 22px 14px; }
+  .card-art.screenshot-gallery > .gallery-shot { width: 31%; height: auto; border-radius: 11px; }
   .app-card[data-id="ryce"] .card-art { min-height: 365px; }
   .ryce-screen { height: 340px; }
   .ryce-screen-front { right: 43%; }
