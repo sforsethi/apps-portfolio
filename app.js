@@ -437,13 +437,7 @@ const appsData = [
 
 // --- INITIALIZATION ---
 document.addEventListener("DOMContentLoaded", () => {
-  // Init features
-  initTheme();
-  initHeader();
-  initTypewriter();
   initPortfolio();
-  initContactForm();
-  initScrollSpy();
 });
 
 // --- THEME MANAGEMENT ---
@@ -546,9 +540,13 @@ function initPortfolio() {
 
   // Category filter trigger
   filterTabs.forEach(tab => {
-    tab.addEventListener("click", (e) => {
-      filterTabs.forEach(t => t.classList.remove("active"));
+    tab.addEventListener("click", () => {
+      filterTabs.forEach(t => {
+        t.classList.remove("active");
+        t.setAttribute("aria-pressed", "false");
+      });
       tab.classList.add("active");
+      tab.setAttribute("aria-pressed", "true");
       
       activeCategory = tab.dataset.filter;
       renderApps();
@@ -569,9 +567,12 @@ function initPortfolio() {
 
 function renderCard(app, targetGrid) {
   const card = document.createElement("div");
-  card.className = "app-card glass-panel glass-panel-hover";
+  card.className = "app-card";
   card.setAttribute("style", `--app-color: ${app.color}; --app-color-light: ${app.colorLight};`);
   card.dataset.id = app.id;
+  card.setAttribute("role", "button");
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("aria-label", `View ${app.title} details`);
 
   const tagsHtml = app.tags.slice(0, 3).map(tag => `<span class="tag-pill">${tag}</span>`).join('');
   const ratingHtml = app.rating ? `
@@ -609,6 +610,12 @@ function renderCard(app, targetGrid) {
   // Click handler for opening modal
   card.addEventListener("click", () => {
     openAppModal(app.id);
+  });
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openAppModal(app.id);
+    }
   });
 
   targetGrid.appendChild(card);
@@ -747,7 +754,7 @@ function openAppModal(appId) {
       </div>
       <div class="modal-header-info">
         <div class="modal-title-desc">
-          <h2 class="modal-title">${app.title}</h2>
+          <h2 class="modal-title" id="modal-title">${app.title}</h2>
           <p class="modal-subtitle">${app.subtitle}</p>
         </div>
         <div class="modal-badges">
